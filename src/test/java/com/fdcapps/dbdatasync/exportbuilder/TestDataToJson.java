@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.fdcapps.dbdatasync.context.ContextObj;
 
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ public class TestDataToJson {
 
     ContextObj ctx = ContextObj.instance();
     DataToJson dataToJson = ctx.getDataToJson();
+    private static final Logger log = Logger.getLogger(TestDataToJson.class.getName());
 
     @Test
     public void testGetParameters() throws Exception {
@@ -58,7 +60,7 @@ public class TestDataToJson {
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(sql);
         JSONArray jsonArray = dataToJson.getJsonFromResultSet(rs);
-        String data = "[{\"codigo\":119,\"tipo\":\"LISTAM\",\"tipolista\":\"E\",\"campo_valor_query\":\"\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":\"\",\"pantalla\":104,\"longitud\":\"\",\"depende_campo\":\"\",\"nombrecampo\":\"Roles\",\"variable\":\"roles\",\"orden\":3,\"colecciondato\":\"\",\"valoreslista\":\"\",\"valor_por_parametro\":\"\"},{\"codigo\":117,\"tipo\":\"INFO\",\"tipolista\":\"E\",\"campo_valor_query\":\"login\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":\"\",\"pantalla\":104,\"longitud\":100,\"depende_campo\":\"\",\"nombrecampo\":\"Login\",\"variable\":\"login\",\"orden\":1,\"colecciondato\":\"\",\"valoreslista\":\"\",\"valor_por_parametro\":\"\"},{\"codigo\":118,\"tipo\":\"LISTA\",\"tipolista\":\"E\",\"campo_valor_query\":\"habilitado\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":\"\",\"pantalla\":104,\"longitud\":\"\",\"depende_campo\":\"\",\"nombrecampo\":\"habilitado\",\"variable\":\"habilitado\",\"orden\":2,\"colecciondato\":\"\",\"valoreslista\":\"S,N\",\"valor_por_parametro\":\"\"}]";
+        String data = "[{\"codigo\":119,\"tipo\":\"LISTAM\",\"tipolista\":\"\",\"campo_valor_query\":\"\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":330,\"pantalla\":104,\"longitud\":\"\",\"depende_campo\":\"\",\"nombrecampo\":\"Roles\",\"variable\":\"roles\",\"orden\":3,\"colecciondato\":\"\",\"valoreslista\":\"\",\"valor_por_parametro\":\"\"},{\"codigo\":117,\"tipo\":\"INFO\",\"tipolista\":\"E\",\"campo_valor_query\":\"login\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":\"\",\"pantalla\":104,\"longitud\":100,\"depende_campo\":\"\",\"nombrecampo\":\"Login\",\"variable\":\"login\",\"orden\":1,\"colecciondato\":\"\",\"valoreslista\":\"\",\"valor_por_parametro\":\"\"},{\"codigo\":118,\"tipo\":\"LISTA\",\"tipolista\":\"E\",\"campo_valor_query\":\"habilitado\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":\"\",\"pantalla\":104,\"longitud\":\"\",\"depende_campo\":\"\",\"nombrecampo\":\"habilitado\",\"variable\":\"habilitado\",\"orden\":2,\"colecciondato\":\"\",\"valoreslista\":\"S,N\",\"valor_por_parametro\":\"\"}]";
         assertEquals(data, jsonArray.toString());
         rs.close();
         st.close();

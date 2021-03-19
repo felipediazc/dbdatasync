@@ -44,25 +44,6 @@ public class TestUpdateData {
         return con;
     }
 
-    /*
-    @Test
-    public void testInsertSentence() throws Exception {
-        String json1 = "{\"data\":[{\"maxcon\":10,\"codigo\":7,\"password\":\"Dzx5KmEJPoRw3pGzSy7wFQ==\",\"driver\":\"org.postgresql.Driver\",\"nombre\":\"Conexión a DEMO (PostgreSQL)\",\"url\":\"jdbc:postgresql://localhost:5432/demo?charSet=UTF8\",\"username\":\"tugauser\"}],\"columnpk\":\"codigo\",\"updateOnExist\":false,\"table\":\"tuga_conexiones\"}";
-        List<String> list = updateData.getInsertSentence(new JSONObject(json1));
-        String insertSentence = list.get(0);
-        String expectedResult1 = "INSERT INTO tuga_conexiones (maxcon,codigo,password,driver,nombre,url,username) VALUES (10,7,'Dzx5KmEJPoRw3pGzSy7wFQ==','org.postgresql.Driver','Conexión a DEMO (PostgreSQL)','jdbc:postgresql://localhost:5432/demo?charSet=UTF8','tugauser')";
-        assertEquals(expectedResult1, insertSentence);
-    }
-
-    @Test
-    public void testUpdateSentence() throws Exception {
-        String json1 = "{\"data\":[{\"maxcon\":10,\"codigo\":7,\"password\":\"Dzx5KmEJPoRw3pGzSy7wFQ==\",\"driver\":\"org.postgresql.Driver\",\"nombre\":\"Conexión a DEMO (PostgreSQL)\",\"url\":\"jdbc:postgresql://localhost:5432/demo?charSet=UTF8\",\"username\":\"tugauser\"}],\"columnpk\":\"codigo\",\"updateOnExist\":false,\"table\":\"tuga_conexiones\"}";
-        List<String> list = updateData.getUpdateSentence(new JSONObject(json1));
-        String updateSentence = list.get(0);
-        String expectedResult1 = "UPDATE tuga_conexiones SET maxcon = 10,codigo = 7,password = 'Dzx5KmEJPoRw3pGzSy7wFQ==',driver = 'org.postgresql.Driver',nombre = 'Conexión a DEMO (PostgreSQL)',url = 'jdbc:postgresql://localhost:5432/demo?charSet=UTF8',username = 'tugauser' WHERE codigo = 7";
-        assertEquals(expectedResult1, updateSentence);
-    }*/
-
     @Test
     public void testIsValidTimestamp() throws Exception {
         String inDate = "2017-02-02 15:21:58.0";

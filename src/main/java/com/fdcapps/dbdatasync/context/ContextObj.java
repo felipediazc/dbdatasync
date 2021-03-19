@@ -6,12 +6,15 @@
 package com.fdcapps.dbdatasync.context;
 
 import com.fdcapps.dbdatasync.datadefgen.DataDefinitionGen;
+import com.fdcapps.dbdatasync.datadefgen.DataDefinitionGenImpl;
 import com.fdcapps.dbdatasync.dataupdate.UpdateData;
+import com.fdcapps.dbdatasync.dataupdate.UpdateDataImpl;
 import com.fdcapps.dbdatasync.exportbuilder.DataToJson;
+import com.fdcapps.dbdatasync.exportbuilder.DataToJsonImpl;
 import com.fdcapps.dbdatasync.exportbuilder.ExportData;
+import com.fdcapps.dbdatasync.exportbuilder.ExportDataImpl;
 import com.fdcapps.dbdatasync.input.DataInput;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.fdcapps.dbdatasync.input.DataInputResourceImpl;
 
 /**
  * ContextObj is an object to manage spring IOC objects
@@ -21,7 +24,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ContextObj {
 
     private static ContextObj instance = null;
-    private static ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
     private ContextObj() {
     }
@@ -34,22 +36,22 @@ public class ContextObj {
     }
 
     public DataInput getDataInput() {
-        return (DataInput) context.getBean("datainput");
+        return new DataInputResourceImpl();
     }
 
     public ExportData getExportData() {
-        return (ExportData) context.getBean("exportdata");
+        return new ExportDataImpl();
     }
 
     public DataDefinitionGen getGenerator() {
-        return (DataDefinitionGen) context.getBean("datadefinitiongen");
+        return new DataDefinitionGenImpl();
     }
 
     public DataToJson getDataToJson() {
-        return (DataToJson) context.getBean("datatojson");
+        return new DataToJsonImpl();
     }
 
     public UpdateData getUpdateData() {
-        return (UpdateData) context.getBean("updatedata");
+        return new UpdateDataImpl();
     }
 }

@@ -62,7 +62,7 @@ public class TestExportData {
         JSONObject jsonDataToSync = exportData.getData(dataDefinition, parameters, con);
         in = dataInput.getDataInput("out1.json");//test1.json -> cambiar a postgresql
         String str = Utils.getStringFromInputStream(in);
-        log.info(jsonDataToSync.toString());
+        //log.info(jsonDataToSync.toString());
         assertEquals(str, jsonDataToSync.toString());
         con.close();
     }

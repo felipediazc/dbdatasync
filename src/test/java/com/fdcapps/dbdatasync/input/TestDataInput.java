@@ -35,8 +35,8 @@ public class TestDataInput {
         InputStream in = dataInput.getDataInput("pantalla.json");
         DataDefinition dataDefinition = generator.getDataDefinition(in);
         assertEquals("pantalla", dataDefinition.getId());
-        assertEquals("tuga_pantallas", dataDefinition.getTable());
-        assertEquals("codigo", dataDefinition.getColumnpk());
+        assertEquals("tuga_roles", dataDefinition.getTable());
+        assertEquals("rol", dataDefinition.getColumnpk());
         List<Object> depList = dataDefinition.getDependencies();
         DataDependency dependency = (DataDependency) ObjectParser.getDefinitionObject((LinkedTreeMap<?,?>) depList.get(0));
         assertEquals("tuga_conexiones", dependency.getTable());
@@ -44,9 +44,9 @@ public class TestDataInput {
         assertEquals("codigo", dependency.getColumnpk());
         assertEquals(false, dependency.getUpdateOnExist());
 
-        DefinitionDependency definitionDependency = (DefinitionDependency) ObjectParser.getDefinitionObject((LinkedTreeMap<?,?>) depList.get(2));
+        DefinitionDependency definitionDependency = (DefinitionDependency) ObjectParser.getDefinitionObject((LinkedTreeMap<?,?>) depList.get(3));
         assertEquals("importaexcel", definitionDependency.getDefinition());
-        assertEquals("SELECT importaexcel FROM tuga_campos WHERE pantalla = {codigo}", definitionDependency.getParameter());
+        assertEquals("SELECT importaexcel FROM tuga_campos WHERE pantalla = {codigo} AND importaexcel is NOT NULL", definitionDependency.getParameter());
     }
 
 }
