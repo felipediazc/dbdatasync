@@ -2,6 +2,8 @@
 .vscode
 .metals
 .settings
+.classpath
+.project
 target/
 nbactions.xml
 
