@@ -1,0 +1,20 @@
+{
+    "id": "menu",
+    "table": "tuga_treemenu",
+    "data": "SELECT * FROM tuga_treemenu WHERE seq >= (SELECT seq FROM tuga_treemenu WHERE id IN (SELECT parentid FROM tuga_treemenu WHERE id = {codigo})) ORDER BY seq",
+    "columnpk": "id",
+    "dependencies": [
+        {
+            "table": "tuga_roles",
+            "data": "SELECT DISTINCT rol FROM tuga_rolesaplicaciones WHERE aplicacion IN (SELECT id FROM tuga_treemenu WHERE seq >= (SELECT seq FROM tuga_treemenu WHERE id IN (SELECT parentid FROM tuga_treemenu WHERE id = {codigo})))",
+            "columnpk": "rol",
+            "updateonexist": false
+        },  
+        {
+            "table": "tuga_rolesaplicaciones",
+            "data": "SELECT * FROM tuga_rolesaplicaciones WHERE aplicacion IN (SELECT id FROM tuga_treemenu WHERE seq >= (SELECT seq FROM tuga_treemenu WHERE id IN (SELECT parentid FROM tuga_treemenu WHERE id = {codigo})))",
+            "columnpk": "aplicacion, rol",
+            "updateonexist": true
+        }              
+    ]    
+}

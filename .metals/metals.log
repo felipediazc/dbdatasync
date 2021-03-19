@@ -1,0 +1,19 @@
+[0m2021.01.21 05:23:45 INFO  Started: Metals version 0.9.10 in workspace '/Users/felipediazc/Proyectos/DbdataSync' for client vscode 1.52.1.[0m
+[0m2021.01.21 05:23:47 INFO  time: initialize in 1.51s[0m
+[0m2021.01.21 05:23:48 WARN  Build server is not auto-connectable.[0m
+[0m2021.01.21 07:41:44 INFO  shutting down Metals[0m
+[0m2021.02.26 05:47:27 INFO  Started: Metals version 0.10.0 in workspace '/Users/felipediazc/Proyectos/DbdataSync' for client vscode 1.53.2.[0m
+[0m2021.02.26 05:47:30 INFO  time: initialize in 2.25s[0m
+[0m2021.02.26 05:47:32 WARN  Build server is not auto-connectable.[0m
+[0m2021.02.26 06:04:34 INFO  shutting down Metals[0m
+[0m2021.02.26 07:01:18 INFO  Started: Metals version 0.10.0 in workspace '/Users/felipediazc/Proyectos/DbdataSync' for client vscode 1.53.2.[0m
+[0m2021.02.26 07:01:20 INFO  time: initialize in 1.93s[0m
+[0m2021.02.26 07:01:20 WARN  Build server is not auto-connectable.[0m
+[0m2021.02.26 07:01:22 INFO  skipping build import with status 'Requested'[0m
+feb. 26, 2021 7:09:52 A. M. org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFORMACIÓN: Unsupported notification method: $/setTraceNotification
+[0m2021.02.26 07:11:28 INFO  shutting down Metals[0m
+[0m2021.03.11 06:20:35 INFO  Started: Metals version 0.10.0 in workspace '/Users/felipediazc/Proyectos/DbdataSync' for client vscode 1.54.1.[0m
+[0m2021.03.11 06:20:37 INFO  time: initialize in 2.03s[0m
+[0m2021.03.11 06:20:38 WARN  Build server is not auto-connectable.[0m
+[0m2021.03.11 08:32:15 INFO  shutting down Metals[0m
