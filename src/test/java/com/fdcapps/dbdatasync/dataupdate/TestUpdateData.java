@@ -5,6 +5,7 @@ import com.fdcapps.dbdatasync.datadefgen.DataDefinitionGen;
 import com.fdcapps.dbdatasync.datadefinition.DataDefinition;
 import com.fdcapps.dbdatasync.exportbuilder.ExportData;
 import com.fdcapps.dbdatasync.input.DataInput;
+import com.fdcapps.dbdatasync.input.Utils;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -51,15 +53,37 @@ public class TestUpdateData {
     }
 
     @Test
+    public void testUpdateDatabase() throws Exception {
+        InputStream in = dataInput.getDataInput("inform164.json");
+        String str = Utils.getStringFromInputStream(in);
+        JSONObject jsonDataToSync = new JSONObject(str);
+        Boolean thrown = false;
+        try {
+            Connection conDestiny = getConnection("database-dest");
+            TriggerManagement.disableTriggers(conDestiny);
+            updateData.sync(jsonDataToSync, conDestiny);
+            TriggerManagement.enableTriggers(conDestiny);
+            conDestiny.close();
+        } catch (SQLException e) {
+            thrown = true;
+        }
+        assertEquals(false, thrown);
+    }
+
+    @Test
     public void testSync() throws Exception {
-        //pantalla.json 4824
-        //reporte.json 4265
-        //menu.json 4497
-        List<String> parameters = Arrays.asList("4497");// 4824
-        InputStream in = dataInput.getDataInput("menu.json");//pantalla.json
+        // pantalla.json 4824
+        // reporte.json 4265
+        // menu.json 0
+        // pdf.json 44
+        // ajaxsql.json 0
+        List<String> parameters = Arrays.asList("144");
+        // List<String> parameters = new ArrayList<String>();
+        InputStream in = dataInput.getDataInput("pdf.json");
         DataDefinition dataDefinition = dataDefinitionGen.getDataDefinition(in);
         Connection conOrigin = getConnection("database");
         JSONObject jsonDataToSync = exportData.getData(dataDefinition, parameters, conOrigin);
+        log.info(jsonDataToSync.toString());
         conOrigin.close();
         Boolean thrown = false;
         try {

@@ -89,28 +89,19 @@ public class ExportDataImpl implements ExportData {
                 jsonDependencies.put(dependency);
             } else if (dependencyObj instanceof DefinitionDependency) {
                 DefinitionDependency temp = (DefinitionDependency) dependencyObj;
-                // dependency.put("definition", temp.getDefinition());
                 sqlDep = temp.getParameter();
                 sqlDep = dataToJson.getFullSql(sqlDep, paramValues);
-                //log.info("***** SQL IS " + sqlDep);
                 try {
                     JSONArray jsonDataDependency = dataToJson.getDataFromSql(sqlDep, con);
-                    //log.info("***** DEPENDENCY IS " + jsonDataDependency.toString());
-                    // dependency.put("parameter", jsonDataDependency);
                     List<String> definitionParameters = getListFromJSONArray(jsonDataDependency);
-                    //log.info("***** DEFINITION PARAMS IS " + definitionParameters.toString());
-                    // jsonDataDependency
                     InputStream in = dataInput.getDataInput(temp.getDefinition() + ".json");
                     DataDefinition dataSubDefinition = generator.getDataDefinition(in);
-                    //JSONObject json = exportData.getData(dataDefinition, definitionParameters, con);
                     JSONObject json = getData(dataSubDefinition, definitionParameters, con);
                     dependency.put("definition", json);
-                    //log.info("***** PUT DEFINITION " + json.toString());
                     jsonDependencies.put(dependency);
                 } catch (Exception e) {
                     log.error("Error getting JSONArray Data from SQL sentence ", e);
                 }
-                // jsonDependencies.put(dependency);
             }
         });
         jsonData.put("dependencies", jsonDependencies);

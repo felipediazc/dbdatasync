@@ -113,17 +113,15 @@ public class ExecuteSQL {
             } else if (isBoolean(objData)) {
                 column.put("value", record.get(columnName).toString());
                 column.put("type", "BOOLEAN");
+            } else if (isValidTimestamp(record.get(columnName).toString())) {
+                column.put("value", record.get(columnName).toString());
+                column.put("type", "TIMESTAMP");
             } else if (isString(record, columnName)) {
                 column.put("value", record.getString(columnName));
                 column.put("type", "STRING");
             } else {
-                if (isValidTimestamp(record.get(columnName).toString())) {
-                    column.put("value", record.get(columnName).toString());
-                    column.put("type", "TIMESTAMP");
-                } else {
-                    column.put("value", record.get(columnName).toString());
-                    column.put("type", "STRING");
-                }
+                column.put("value", record.get(columnName).toString());
+                column.put("type", "STRING");
             }
             parameters.put(column);
         }

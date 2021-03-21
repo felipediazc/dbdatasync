@@ -6,4 +6,5 @@
 .project
 target/
 nbactions.xml
-
+.idea
+DbdataSync.iml

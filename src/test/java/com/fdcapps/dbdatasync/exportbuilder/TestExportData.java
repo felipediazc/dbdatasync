@@ -52,7 +52,7 @@ public class TestExportData {
         assertNotNull(con);
         con.close();
     }
-
+/*
     @Test
     public void testGetData() throws Exception {
         List<String> parameters = Arrays.asList("4824");//113
@@ -65,5 +65,5 @@ public class TestExportData {
         //log.info(jsonDataToSync.toString());
         assertEquals(str, jsonDataToSync.toString());
         con.close();
-    }
+    }*/
 }
