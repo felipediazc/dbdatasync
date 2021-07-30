@@ -18,3 +18,16 @@ mvn test
 *** HOW TO DOWNLOAD ALL DEPENDENCIES
 
 mvn install dependency:copy-dependencies
+
+
+*** HOW TO CREATE DOCKER CONTAINER FOR UNIT TEST
+
+Go into the sql folder and use the following command:
+
+    docker-compose up
+
+Then, execute the following command to create the tables (in the project root, not into the sql folder)
+
+    mvn sql:execute
+
+    

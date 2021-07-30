@@ -1,0 +1,18 @@
+version: "3.1"
+# https://docs.docker.com/compose/compose-file/
+
+services:
+  postgres:
+    image: "postgres"
+    container_name: Postgresql_jhanu_test
+    environment:
+      - POSTGRES_USER=jnuser
+      - POSTGRES_PASSWORD=1a2b3c4d
+      - POSTGRES_DB=jhanu
+    ports:
+     - "5432:5432"
+    volumes:
+      - jhanu-test-data:/var/lib/postgresql/data/ 
+
+volumes:
+  jhanu-test-data:

@@ -20,6 +20,7 @@ public class UpdateDataImpl implements UpdateData {
     public static final String COLUMNPK = "columnpk";
 
     private static final Logger log = Logger.getLogger(UpdateDataImpl.class.getName());
+    public static final String AND = " AND ";
 
     @Override
     public void sync(JSONObject jsonDataToSync, Connection con) throws SQLException {
@@ -58,17 +59,17 @@ public class UpdateDataImpl implements UpdateData {
         String selectSql = "";
         try (Statement st1 = con.createStatement()) {
             for (int i = 0; i < data.length(); i++) {
-                JSONObject record = data.getJSONObject(i);
-                selectSql = getSelectSentence(tableName, columnPk, record);
+                JSONObject jsonRecord = data.getJSONObject(i);
+                selectSql = getSelectSentence(tableName, columnPk, jsonRecord);
                 rs = st1.executeQuery(selectSql);
                 if (rs.next()) {
-                    updateSql = getUpdateSentence(tableName, columnPk, record);
-                    JSONArray parameters = ExecuteSQL.getParameters(record);
+                    updateSql = getUpdateSentence(tableName, columnPk, jsonRecord);
+                    JSONArray parameters = ExecuteSQL.getParameters(jsonRecord);
                     parameters = ExecuteSQL.getUpdateParameters(parameters, columnPk);
                     ExecuteSQL.executeUpdate(updateSql, parameters, con);
                 } else {
-                    updateSql = getInsertSentence(tableName, record);
-                    JSONArray parameters = ExecuteSQL.getParameters(record);
+                    updateSql = getInsertSentence(tableName, jsonRecord);
+                    JSONArray parameters = ExecuteSQL.getParameters(jsonRecord);
                     ExecuteSQL.executeUpdate(updateSql, parameters, con);
                 }
             }
@@ -89,19 +90,19 @@ public class UpdateDataImpl implements UpdateData {
                 Boolean updateOnExist = dependency.getBoolean("updateOnExist");
                 JSONArray data = dependency.getJSONArray("data");
                 for (int i = 0; i < data.length(); i++) {
-                    JSONObject record = data.getJSONObject(i);
-                    selectSql = getSelectSentence(tableName, columnPk, record);
+                    JSONObject jsonRecord = data.getJSONObject(i);
+                    selectSql = getSelectSentence(tableName, columnPk, jsonRecord);
                     rs = st1.executeQuery(selectSql);
                     if (rs.next()) {
                         if (Boolean.TRUE.equals(updateOnExist)) {
-                            updateSql = getUpdateSentence(tableName, columnPk, record);
-                            JSONArray parameters = ExecuteSQL.getParameters(record);
+                            updateSql = getUpdateSentence(tableName, columnPk, jsonRecord);
+                            JSONArray parameters = ExecuteSQL.getParameters(jsonRecord);
                             parameters = ExecuteSQL.getUpdateParameters(parameters, columnPk);
                             ExecuteSQL.executeUpdate(updateSql, parameters, con);
                         }
                     } else {
-                        updateSql = getInsertSentence(tableName, record);
-                        JSONArray parameters = ExecuteSQL.getParameters(record);
+                        updateSql = getInsertSentence(tableName, jsonRecord);
+                        JSONArray parameters = ExecuteSQL.getParameters(jsonRecord);
                         ExecuteSQL.executeUpdate(updateSql, parameters, con);
                     }
                 }
@@ -119,11 +120,11 @@ public class UpdateDataImpl implements UpdateData {
         return str.replace("'", "''");
     }
 
-    public String getInsertSentence(String tableName, JSONObject record) {
+    public String getInsertSentence(String tableName, JSONObject jsonRecord) {
         StringBuilder sql1 = new StringBuilder("INSERT INTO ").append(tableName);
         StringBuilder sql2 = new StringBuilder(" (");
         StringBuilder sql3 = new StringBuilder(VALUES);
-        Iterator<?> keys = record.keys();
+        Iterator<?> keys = jsonRecord.keys();
         while (keys.hasNext()) {
             if (!sql2.toString().equals(" (")) {
                 sql2.append(",");
@@ -140,7 +141,7 @@ public class UpdateDataImpl implements UpdateData {
         return sql1.append(sql2).append(sql3).toString();
     }
 
-    public String getUpdateSentence(String tableName, String columnPk, JSONObject record) {
+    public String getUpdateSentence(String tableName, String columnPk, JSONObject jsonRecord) {
         StringBuilder sql1 = new StringBuilder("UPDATE ").append(tableName);
         StringBuilder sql2 = new StringBuilder(SET);
 
@@ -150,50 +151,48 @@ public class UpdateDataImpl implements UpdateData {
             String primaryKey = parts[i].trim();
             sql3.append(primaryKey).append(" = ?");
             if (i < (parts.length - 1)) {
-                sql3.append(" AND ");
+                sql3.append(AND);
             }
         }
-        Iterator<?> keys = record.keys();
+        Iterator<?> keys = jsonRecord.keys();
         while (keys.hasNext()) {
             if (!sql2.toString().equals(SET)) {
                 sql2.append(",");
             }
             String columnName = (String) keys.next();
-            sql2.append(columnName).append(" = ");
+            sql2.append("\"").append(columnName).append("\"").append(" = ");
             sql2.append("?");
         }
         return sql1.append(sql2).append(sql3).toString();
     }
 
-    public String getSelectSentence(String tableName, String columnPk, JSONObject record) {
+    public String getSelectSentence(String tableName, String columnPk, JSONObject jsonRecord) {
         StringBuilder sql1 = new StringBuilder("SELECT ");
-        StringBuilder sql2 = new StringBuilder("");
+        StringBuilder sql2 = new StringBuilder();
         String[] parts = columnPk.split(",");
         StringBuilder sql3 = new StringBuilder(" FROM ").append(tableName).append(" WHERE 1 = 1 ");
-        Iterator<?> keys = record.keys();
+        Iterator<?> keys = jsonRecord.keys();
 
         while (keys.hasNext()) {
             if (!sql2.toString().equals("")) {
                 sql2.append(", ");
             }
             String columnName = (String) keys.next();
-            sql2.append(columnName);
-            Object objData = record.get(columnName);
+            sql2.append("\"").append(columnName).append("\"");
+            Object objData = jsonRecord.get(columnName);
             if (ExecuteSQL.isInteger(objData) || ExecuteSQL.isDouble(objData) || ExecuteSQL.isBoolean(objData)
                     || ExecuteSQL.isLong(objData)) {
                 if (Arrays.asList(parts).contains(columnName)) {
-                    sql3.append(" AND ").append(columnName).append(" = ").append(record.get(columnName).toString());
+                    sql3.append(AND).append(columnName).append(" = ").append(jsonRecord.get(columnName).toString());
                 }
-            } else if (ExecuteSQL.isString(record, columnName)) {
+            } else if (ExecuteSQL.isString(jsonRecord, columnName)) {
                 if (Arrays.asList(parts).contains(columnName)) {
-                    sql3.append(" AND ").append(columnName).append(" = ").append("'")
-                            .append(escapeQuote(record.getString(columnName))).append("'");
+                    sql3.append(AND).append(columnName).append(" = ").append("'")
+                            .append(escapeQuote(jsonRecord.getString(columnName))).append("'");
                 }
-            } else {
-                if (Arrays.asList(parts).contains(columnName)) {
-                    sql3.append(" AND ").append(columnName).append(" = ").append("'")
-                            .append(escapeQuote(record.get(columnName).toString())).append("'");
-                }
+            } else if (Arrays.asList(parts).contains(columnName)) {
+                sql3.append(AND).append(columnName).append(" = ").append("'")
+                        .append(escapeQuote(jsonRecord.get(columnName).toString())).append("'");
             }
         }
         return sql1.append(sql2).append(sql3).toString();

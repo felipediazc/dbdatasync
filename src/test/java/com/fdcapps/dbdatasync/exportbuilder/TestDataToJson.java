@@ -23,11 +23,11 @@ public class TestDataToJson {
     private static final Logger log = Logger.getLogger(TestDataToJson.class.getName());
 
     @Test
-    public void testGetParameters() throws Exception {
+    public void testGetParameters() {
 
         String sql = "SELECT a,b,c FROM table WHERE a = {amr} AND b = '{b}' AND c = {codigo}";
         List<String> paramList = dataToJson.getParameters(sql);
-        assertArrayEquals(new String[] { "{amr}", "{b}", "{codigo}" }, paramList.toArray());
+        assertArrayEquals(new String[]{"{amr}", "{b}", "{codigo}"}, paramList.toArray());
     }
 
     @Test
@@ -56,11 +56,11 @@ public class TestDataToJson {
 
         TestExportData exportData = new TestExportData();
         Connection con = exportData.getConnection();
-        String sql = "SELECT * FROM tuga_campos WHERE pantalla = 104";
+        String sql = "SELECT * FROM jnu_lovs WHERE id = '12-idtype'";
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(sql);
         JSONArray jsonArray = dataToJson.getJsonFromResultSet(rs);
-        String data = "[{\"codigo\":119,\"tipo\":\"LISTAM\",\"tipolista\":\"\",\"campo_valor_query\":\"\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":330,\"pantalla\":104,\"longitud\":\"\",\"depende_campo\":\"\",\"nombrecampo\":\"Roles\",\"variable\":\"roles\",\"orden\":3,\"colecciondato\":\"\",\"valoreslista\":\"\",\"valor_por_parametro\":\"\"},{\"codigo\":117,\"tipo\":\"INFO\",\"tipolista\":\"E\",\"campo_valor_query\":\"login\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":\"\",\"pantalla\":104,\"longitud\":100,\"depende_campo\":\"\",\"nombrecampo\":\"Login\",\"variable\":\"login\",\"orden\":1,\"colecciondato\":\"\",\"valoreslista\":\"\",\"valor_por_parametro\":\"\"},{\"codigo\":118,\"tipo\":\"LISTA\",\"tipolista\":\"E\",\"campo_valor_query\":\"habilitado\",\"importaexcel\":\"\",\"obligatorio\":\"S\",\"javascript\":\"\",\"reporte\":\"\",\"pantalla\":104,\"longitud\":\"\",\"depende_campo\":\"\",\"nombrecampo\":\"habilitado\",\"variable\":\"habilitado\",\"orden\":2,\"colecciondato\":\"\",\"valoreslista\":\"S,N\",\"valor_por_parametro\":\"\"}]";
+        String data = "[{\"site\":\"DEFAULT\",\"json\":\"{\\\"data\\\":[{\\\"key\\\":\\\"STRING\\\",\\\"value\\\":\\\"sex\\\"}],\\\"sql\\\":\\\"SELECT id, description FROM itf_idtype\\\",\\\"javaclass\\\":\\\"com.jhanu.core.obj.SqlObject\\\",\\\"jdbc\\\":\\\"12-itfdhylo\\\",\\\"usecache\\\":true}\",\"id\":\"12-idtype\"}]";
         assertEquals(data, jsonArray.toString());
         rs.close();
         st.close();
