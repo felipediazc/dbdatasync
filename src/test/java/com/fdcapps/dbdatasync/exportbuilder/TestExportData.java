@@ -52,18 +52,18 @@ public class TestExportData {
         assertNotNull(con);
         con.close();
     }
-/*
+
     @Test
     public void testGetData() throws Exception {
-        List<String> parameters = Arrays.asList("4824");//113
-        InputStream in = dataInput.getDataInput("pantalla.json");
+        List<String> parameters = Arrays.asList("12-vallein");//113
+        InputStream in = dataInput.getDataInput("components.json");
         DataDefinition dataDefinition = generator.getDataDefinition(in);
         Connection con = getConnection();
         JSONObject jsonDataToSync = exportData.getData(dataDefinition, parameters, con);
-        in = dataInput.getDataInput("out1.json");//test1.json -> cambiar a postgresql
+        in = dataInput.getDataInput("out1.json");
         String str = Utils.getStringFromInputStream(in);
         //log.info(jsonDataToSync.toString());
         assertEquals(str, jsonDataToSync.toString());
         con.close();
-    }*/
+    }
 }

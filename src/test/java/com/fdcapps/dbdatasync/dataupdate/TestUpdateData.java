@@ -54,15 +54,16 @@ public class TestUpdateData {
 
     @Test
     public void testUpdateDatabase() throws Exception {
-        InputStream in = dataInput.getDataInput("inform164.json");
+        InputStream in = dataInput.getDataInput("component_12-vallein.json");
         String str = Utils.getStringFromInputStream(in);
         JSONObject jsonDataToSync = new JSONObject(str);
         Boolean thrown = false;
         try {
             Connection conDestiny = getConnection("database-dest");
-            TriggerManagement.disableTriggers(conDestiny);
+            /*Use TriggerManagement only for oracle*/
+            /*TriggerManagement.disableTriggers(conDestiny);*/
             updateData.sync(jsonDataToSync, conDestiny);
-            TriggerManagement.enableTriggers(conDestiny);
+            /*TriggerManagement.enableTriggers(conDestiny);*/
             conDestiny.close();
         } catch (SQLException e) {
             thrown = true;
@@ -72,14 +73,8 @@ public class TestUpdateData {
 
     @Test
     public void testSync() throws Exception {
-        // pantalla.json 4824
-        // reporte.json 4265
-        // menu.json 0
-        // pdf.json 44
-        // ajaxsql.json 0
-        List<String> parameters = Arrays.asList("144");
-        // List<String> parameters = new ArrayList<String>();
-        InputStream in = dataInput.getDataInput("pdf.json");
+        List<String> parameters = Arrays.asList("12-vallein");
+        InputStream in = dataInput.getDataInput("components.json");
         DataDefinition dataDefinition = dataDefinitionGen.getDataDefinition(in);
         Connection conOrigin = getConnection("database");
         JSONObject jsonDataToSync = exportData.getData(dataDefinition, parameters, conOrigin);
@@ -88,9 +83,7 @@ public class TestUpdateData {
         Boolean thrown = false;
         try {
             Connection conDestiny = getConnection("database-dest");
-            TriggerManagement.disableTriggers(conDestiny);
             updateData.sync(jsonDataToSync, conDestiny);
-            TriggerManagement.enableTriggers(conDestiny);
             conDestiny.close();
         } catch (SQLException e) {
             thrown = true;

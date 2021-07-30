@@ -76,7 +76,7 @@ public class DataToJsonImpl implements DataToJson {
                 }
                 // if value in DB is null, then we set it to default value
                 if (columnValue == null) {
-                    columnValue = "";
+                    columnValue = MetaDataUtil.getNullColumnType(resultSet.getMetaData().getColumnType(i + 1));
                 }
                 /*
                  * Next if block is a hack. In case when in db we have values like price and

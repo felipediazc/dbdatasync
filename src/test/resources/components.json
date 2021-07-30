@@ -1,0 +1,44 @@
+{
+  "id": "components",
+  "table": "jnu_eventactions",
+  "data": "SELECT id, seq, usercreate, userupdate, event, actionclass, actiondata, eventaction, jdbc, enabled, description FROM jnu_eventactions WHERE event IN (SELECT id FROM jnu_events WHERE component = '{id}') ORDER BY id",
+  "columnpk": "id",
+  "dependencies": [
+    {
+      "table": "jnu_sites",
+      "data": "SELECT sitename FROM jnu_sites WHERE sitename IN (SELECT site FROM jnu_projects WHERE id IN (SELECT project FROM jnu_components WHERE id = '{id}')) ORDER BY sitename",
+      "columnpk": "sitename",
+      "updateonexist": false
+    },
+    {
+      "table": "jnu_projects",
+      "data": "SELECT id, regdate, usercreate, site FROM jnu_projects WHERE id IN (SELECT project FROM jnu_components WHERE id = '{id}') ORDER BY id",
+      "columnpk": "id",
+      "updateonexist": false
+    },
+    {
+      "table": "jnu_jdbc",
+      "data": "SELECT id, description, driver, url, username, passwd, maxcon, usercreate, userupdate, site FROM jnu_jdbc WHERE id IN (SELECT jdbc FROM jnu_components WHERE id = '{id}') ORDER BY id",
+      "columnpk": "id",
+      "updateonexist": false
+    },
+    {
+      "table": "jnu_components",
+      "data": "SELECT id, description, project, css, jshead, jsbody, usercreate, userupdate, title, showtitle, componenttype, jdbc, jsonobject, usecache FROM jnu_components WHERE id = '{id}' ORDER BY id",
+      "columnpk": "id",
+      "updateonexist": true
+    },
+    {
+      "table": "jnu_componentparts",
+      "data": "SELECT id, component, varname, label, showlabel, datatype, action, canbenull, valbyquery, valbydefault, size, placeholder, json, usercreate, userupdate, tabgroup, \"column\" FROM jnu_componentparts WHERE component = '{id}' ORDER BY id",
+      "columnpk": "id",
+      "updateonexist": true
+    },
+    {
+      "table": "jnu_events",
+      "data": "SELECT id, name, component, project, seq, conf, label FROM jnu_events WHERE component = '{id}' ORDER BY id",
+      "columnpk": "id",
+      "updateonexist": true
+    }
+  ]
+}
