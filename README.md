@@ -6,18 +6,23 @@ This program synchronizes update data from database A to database B, using JSON 
 
 You need MAVEN and JAVA 1.8 installed in your PC (MAC/LINUX).
 
-* HOW TO RUN ?
+*** HOW TO COMPILE?
 
+    mvn clean install
 
-* HOW TO TEST ?
+*** HOW TO PACKAGE AN UPLOAD INTO MAVEN REPOSITORY?
+
+    mvn deploy
+
+*** HOW TO TEST ?
 
 If you want to do the unit and integration test, please use the following instruction:
 
-mvn test
+    mvn test
 
 *** HOW TO DOWNLOAD ALL DEPENDENCIES
 
-mvn install dependency:copy-dependencies
+    mvn install dependency:copy-dependencies
 
 
 *** HOW TO CREATE DOCKER CONTAINER FOR UNIT TEST
