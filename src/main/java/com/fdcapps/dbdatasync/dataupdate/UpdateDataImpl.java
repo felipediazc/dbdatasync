@@ -38,12 +38,12 @@ public class UpdateDataImpl implements UpdateData {
 
     public void syncAll(JSONObject jsonDataToSync, Connection con) throws SQLException {
         try {
-            syncMainData(jsonDataToSync, con);
             JSONArray dependencies = jsonDataToSync.getJSONArray("dependencies");
             for (int i = 0; i < dependencies.length(); i++) {
                 JSONObject dependency = dependencies.getJSONObject(i);
                 syncDependency(dependency, con);
             }
+            syncMainData(jsonDataToSync, con);
         } catch (SQLException e) {
             log.error("Error on syncAll " + e);
             throw e;
@@ -133,7 +133,7 @@ public class UpdateDataImpl implements UpdateData {
                 sql3.append(",");
             }
             String columnName = (String) keys.next();
-            sql2.append(columnName);
+            sql2.append("\"" + columnName + "\"");
             sql3.append("?");
         }
         sql2.append(") ");
