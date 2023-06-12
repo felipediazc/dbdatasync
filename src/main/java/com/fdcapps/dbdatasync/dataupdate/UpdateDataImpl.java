@@ -133,7 +133,8 @@ public class UpdateDataImpl implements UpdateData {
                 sql3.append(",");
             }
             String columnName = (String) keys.next();
-            sql2.append("\"" + columnName + "\"");
+            //sql2.append("\"" + columnName + "\"");
+            sql2.append(columnName);
             sql3.append("?");
         }
         sql2.append(") ");
@@ -160,7 +161,8 @@ public class UpdateDataImpl implements UpdateData {
                 sql2.append(",");
             }
             String columnName = (String) keys.next();
-            sql2.append("\"").append(columnName).append("\"").append(" = ");
+            //sql2.append("\"").append(columnName).append("\"").append(" = ");
+            sql2.append(columnName).append(" = ");
             sql2.append("?");
         }
         return sql1.append(sql2).append(sql3).toString();
@@ -178,7 +180,8 @@ public class UpdateDataImpl implements UpdateData {
                 sql2.append(", ");
             }
             String columnName = (String) keys.next();
-            sql2.append("\"").append(columnName).append("\"");
+            //sql2.append("\"").append(columnName).append("\"");
+            sql2.append(columnName);
             Object objData = jsonRecord.get(columnName);
             if (ExecuteSQL.isInteger(objData) || ExecuteSQL.isDouble(objData) || ExecuteSQL.isBoolean(objData)
                     || ExecuteSQL.isLong(objData)) {
