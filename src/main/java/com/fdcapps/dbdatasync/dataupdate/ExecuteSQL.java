@@ -9,13 +9,14 @@ import java.util.Date;
 import java.util.Iterator;
 
 import com.fdcapps.dbdatasync.exportbuilder.DataToJsonValues;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExecuteSQL {
 
-    private static final Logger log = Logger.getLogger(ExecuteSQL.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(ExecuteSQL.class.getName());
     public static final String INTEGER = "INTEGER";
     public static final String NULL = "NULL";
     public static final String STRING = "STRING";
@@ -34,7 +35,7 @@ public class ExecuteSQL {
         } else if (columnType == java.sql.Types.BIGINT) {
             return INTEGER;
         } else if (columnType == java.sql.Types.CHAR || columnType == java.sql.Types.LONGVARCHAR
-                || columnType == java.sql.Types.VARCHAR || columnType == 12) {
+                || columnType == java.sql.Types.VARCHAR) {
             return STRING;
         } else if (columnType == java.sql.Types.REAL) {
             return DOUBLE;
@@ -306,11 +307,11 @@ public class ExecuteSQL {
                 jsonObject.put("error", "");
             }
         } catch (Exception e) {
-            log.error("executeUpdate() : " + e);
-            log.error("parameter: " + key + " value: " + value);
+            log.error("executeUpdate() : {}", e.toString());
+            log.error("parameter: {} value {}", key, value);
             jsonObject.put("data", "");
             jsonObject.put("error", e);
-            throw new SQLException("" + e + ". parameter: " + key + " value: " + value);
+            throw new SQLException(e + ". parameter: " + key + " value: " + value);
         }
         return jsonObject;
     }

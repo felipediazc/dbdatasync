@@ -7,7 +7,8 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,7 +20,7 @@ public class UpdateDataImpl implements UpdateData {
     public static final String DEFINITION = "definition";
     public static final String COLUMNPK = "columnpk";
 
-    private static final Logger log = Logger.getLogger(UpdateDataImpl.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(UpdateDataImpl.class.getName());
     public static final String AND = " AND ";
 
     @Override
@@ -30,7 +31,7 @@ public class UpdateDataImpl implements UpdateData {
             con.commit();
             con.setAutoCommit(true);
         } catch (SQLException e) {
-            log.error("Error on sync " + e);
+            log.error("Error on sync {}", e.toString());
             con.rollback();
             throw e;
         }
@@ -45,7 +46,7 @@ public class UpdateDataImpl implements UpdateData {
             }
             syncMainData(jsonDataToSync, con);
         } catch (SQLException e) {
-            log.error("Error on syncAll " + e);
+            log.error("Error on syncAll {}", e.toString());
             throw e;
         }
     }
@@ -74,7 +75,7 @@ public class UpdateDataImpl implements UpdateData {
                 }
             }
         } catch (SQLException e) {
-            log.error("Error on syncMainData. SELECT_SQL: " + selectSql + " UPDATE_SQL: " + updateSql + " : " + e);
+            log.error("Error on syncMainData. SELECT_SQL: {} UPDATE_SQL: {} : {}", selectSql, updateSql, e.toString());
             throw e;
         }
     }
@@ -111,7 +112,7 @@ public class UpdateDataImpl implements UpdateData {
                 syncAll(definition, con);
             }
         } catch (SQLException e) {
-            log.error("Error on syncDependency. SELECT_SQL: " + selectSql + " UPDATE_SQL: " + updateSql + " : " + e);
+            log.error("Error on syncDependency. SELECT_SQL: {} UPDATE_SQL: {} : {}", selectSql, updateSql, e.toString());
             throw e;
         }
     }
@@ -133,8 +134,7 @@ public class UpdateDataImpl implements UpdateData {
                 sql3.append(",");
             }
             String columnName = (String) keys.next();
-            //sql2.append("\"" + columnName + "\"");
-            sql2.append(columnName);
+            sql2.append("\"" + columnName + "\"");
             sql3.append("?");
         }
         sql2.append(") ");
@@ -161,8 +161,7 @@ public class UpdateDataImpl implements UpdateData {
                 sql2.append(",");
             }
             String columnName = (String) keys.next();
-            //sql2.append("\"").append(columnName).append("\"").append(" = ");
-            sql2.append(columnName).append(" = ");
+            sql2.append("\"").append(columnName).append("\"").append(" = ");
             sql2.append("?");
         }
         return sql1.append(sql2).append(sql3).toString();
@@ -180,8 +179,7 @@ public class UpdateDataImpl implements UpdateData {
                 sql2.append(", ");
             }
             String columnName = (String) keys.next();
-            //sql2.append("\"").append(columnName).append("\"");
-            sql2.append(columnName);
+            sql2.append("\"").append(columnName).append("\"");
             Object objData = jsonRecord.get(columnName);
             if (ExecuteSQL.isInteger(objData) || ExecuteSQL.isDouble(objData) || ExecuteSQL.isBoolean(objData)
                     || ExecuteSQL.isLong(objData)) {

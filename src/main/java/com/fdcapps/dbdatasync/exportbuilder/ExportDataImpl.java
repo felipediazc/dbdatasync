@@ -23,7 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,7 +39,7 @@ public class ExportDataImpl implements ExportData {
     DataInput dataInput = ctx.getDataInput();
     DataDefinitionGen generator = ctx.getGenerator();
     
-    private static final Logger log = Logger.getLogger(ExportDataImpl.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(ExportDataImpl.class.getName());
 
     public List<String> getListFromJSONArray(JSONArray jsonArray) {
         List<String> list = new ArrayList<>();

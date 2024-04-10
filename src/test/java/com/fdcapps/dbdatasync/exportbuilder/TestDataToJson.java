@@ -12,7 +12,6 @@ import java.util.Map;
 
 import com.fdcapps.dbdatasync.context.ContextObj;
 
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.junit.Test;
 
@@ -20,7 +19,6 @@ public class TestDataToJson {
 
     ContextObj ctx = ContextObj.instance();
     DataToJson dataToJson = ctx.getDataToJson();
-    private static final Logger log = Logger.getLogger(TestDataToJson.class.getName());
 
     @Test
     public void testGetParameters() {
@@ -56,11 +54,11 @@ public class TestDataToJson {
 
         TestExportData exportData = new TestExportData();
         Connection con = exportData.getConnection();
-        String sql = "SELECT * FROM jnu_lovs WHERE id = '12-idtype'";
+        String sql = "SELECT * FROM jnu_lovs WHERE id = '12-departments'";
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(sql);
         JSONArray jsonArray = dataToJson.getJsonFromResultSet(rs);
-        String data = "[{\"site\":\"DEFAULT\",\"json\":\"{\\\"data\\\":[{\\\"key\\\":\\\"STRING\\\",\\\"value\\\":\\\"sex\\\"}],\\\"sql\\\":\\\"SELECT id, description FROM itf_idtype\\\",\\\"javaclass\\\":\\\"com.jhanu.core.obj.SqlObject\\\",\\\"jdbc\\\":\\\"12-itfdhylo\\\",\\\"usecache\\\":true}\",\"id\":\"12-idtype\"}]";
+        String data = "[{\"site\":\"DEFAULT\",\"json\":\"{\\\"data\\\":[{\\\"key\\\":\\\"INTEGER\\\",\\\"value\\\":\\\"country\\\"}],\\\"sql\\\":\\\"SELECT id, name FROM jnu_departments WHERE country = ? ORDER BY name\\\",\\\"javaclass\\\":\\\"com.jhanu.core.obj.SqlObject\\\",\\\"jdbc\\\":\\\"12-jnucon\\\",\\\"usecache\\\":false}\",\"id\":\"12-departments\"}]";
         assertEquals(data, jsonArray.toString());
         rs.close();
         st.close();

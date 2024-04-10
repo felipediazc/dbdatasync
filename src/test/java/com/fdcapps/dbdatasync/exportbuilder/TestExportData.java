@@ -7,10 +7,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import com.fdcapps.dbdatasync.context.ContextObj;
 import com.fdcapps.dbdatasync.datadefgen.DataDefinitionGen;
@@ -18,13 +15,14 @@ import com.fdcapps.dbdatasync.datadefinition.DataDefinition;
 import com.fdcapps.dbdatasync.input.DataInput;
 import com.fdcapps.dbdatasync.input.Utils;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 import org.junit.Test;
 
 public class TestExportData {
 
-    private static final Logger log = Logger.getLogger(TestExportData.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(TestExportData.class.getName());
     ContextObj ctx = ContextObj.instance();
 
     ExportData exportData = ctx.getExportData();
@@ -55,14 +53,13 @@ public class TestExportData {
 
     @Test
     public void testGetData() throws Exception {
-        List<String> parameters = Arrays.asList("12-vallein");//113
+        List<String> parameters = Collections.singletonList("12-devices");
         InputStream in = dataInput.getDataInput("components.json");
         DataDefinition dataDefinition = generator.getDataDefinition(in);
         Connection con = getConnection();
         JSONObject jsonDataToSync = exportData.getData(dataDefinition, parameters, con);
         in = dataInput.getDataInput("out1.json");
         String str = Utils.getStringFromInputStream(in);
-        //log.info(jsonDataToSync.toString());
         assertEquals(str, jsonDataToSync.toString());
         con.close();
     }

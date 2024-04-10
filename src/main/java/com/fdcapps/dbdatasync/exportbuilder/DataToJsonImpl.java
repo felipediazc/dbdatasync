@@ -14,14 +14,15 @@ import java.util.regex.Pattern;
 
 import com.fdcapps.dbdatasync.exportbuilder.exceptions.ExportBuilderException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DataToJsonImpl implements DataToJson {
 
-    private static final Logger log = Logger.getLogger(DataToJsonImpl.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(DataToJsonImpl.class.getName());
 
     @Override
     public Map<String, String> getParametersAndValues(String sql, List<String> values) throws ExportBuilderException {
@@ -101,7 +102,7 @@ public class DataToJsonImpl implements DataToJson {
             ResultSet rs = st.executeQuery(sql);
             data = getJsonFromResultSet(rs);
         } catch (Exception e) {
-            log.error("Error excecuting SQL sentence " + sql, e);
+            log.error("Error excecuting SQL sentence {} {}", sql, e.toString());
             throw e;
         }
         return data;
