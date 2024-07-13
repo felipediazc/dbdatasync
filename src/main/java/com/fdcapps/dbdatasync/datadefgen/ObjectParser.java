@@ -21,6 +21,7 @@ public class ObjectParser {
             data.setTable(obj.get("table").toString());
             data.setData(obj.get("data").toString());
             data.setColumnpk(obj.get("columnpk").toString());
+            data.setDelete(obj.get("delete").toString());
             data.setUpdateOnExist(Boolean.parseBoolean(obj.get("updateonexist").toString()));
             return data;
         }

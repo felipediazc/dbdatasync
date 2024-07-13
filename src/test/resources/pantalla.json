@@ -7,18 +7,21 @@
         {
             "table": "tuga_conexiones",
             "data": "SELECT * FROM tuga_conexiones WHERE codigo IN (SELECT conexion FROM tuga_pantallas WHERE codigo = {codigo})",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": false
         },
         {
             "table": "tuga_pantallas",
             "data": "SELECT * FROM tuga_pantallas WHERE codigo = {codigo}",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },        
         {
             "table": "tuga_coleccionesdatos",
             "data": "SELECT * FROM tuga_coleccionesdatos WHERE codigo IN (SELECT colecciondato FROM tuga_campos WHERE pantalla = {codigo})",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },
@@ -29,42 +32,49 @@
         {
             "table": "tuga_campos",
             "data": "SELECT * FROM tuga_campos WHERE pantalla = {codigo}",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },
         {
             "table": "tuga_botonespantallas",
             "data": "SELECT * FROM tuga_botonespantallas WHERE pantalla = {codigo}",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },
         {
             "table": "tuga_eventos",
             "data": "SELECT * FROM tuga_eventos WHERE botonpantalla IN (SELECT codigo FROM tuga_botonespantallas WHERE pantalla = {codigo})",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },
         {
             "table": "tuga_condiciones",
             "data": "SELECT * FROM tuga_condiciones WHERE evento IN (SELECT codigo FROM tuga_eventos WHERE botonpantalla IN (SELECT codigo FROM tuga_botonespantallas WHERE pantalla = {codigo}))",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },
         {
             "table": "tuga_accionescondicion",
             "data": "SELECT * FROM tuga_accionescondicion WHERE condicion IN (SELECT codigo FROM tuga_condiciones WHERE evento IN (SELECT codigo FROM tuga_eventos WHERE botonpantalla IN (SELECT codigo FROM tuga_botonespantallas WHERE pantalla = {codigo})))",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },
         {
             "table": "tuga_parametrosaccion",
             "data": "SELECT * FROM tuga_parametrosaccion WHERE accioncondicion IN (SELECT codigo FROM tuga_accionescondicion WHERE condicion IN (SELECT codigo FROM tuga_condiciones WHERE evento IN (SELECT codigo FROM tuga_eventos WHERE botonpantalla IN (SELECT codigo FROM tuga_botonespantallas WHERE pantalla = {codigo}))))",
+            "delete": "",
             "columnpk": "codigo",
             "updateonexist": true
         },
         {
             "table": "tuga_permisosboton",
             "data": "SELECT * FROM tuga_permisosboton WHERE boton IN (SELECT codigo FROM tuga_botonespantallas WHERE pantalla = {codigo})",
+            "delete": "",
             "columnpk": "rol, boton",
             "updateonexist": true
         }        

@@ -5,12 +5,16 @@
  */
 package com.fdcapps.dbdatasync.datadefinition;
 
+import lombok.*;
+
 import java.util.List;
 
 /**
- *
  * @author Felipe Diaz C <felipediazc@fdcapps.com>
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DataDefinition {
 
     String id;
@@ -18,45 +22,5 @@ public class DataDefinition {
     String data;
     String columnpk;
     List<Object> dependencies;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public String getColumnpk() {
-        return columnpk;
-    }
-
-    public void setColumnPk(String columnpk) {
-        this.columnpk = columnpk;
-    }
-
-    public List<Object> getDependencies() {
-        return dependencies;
-    }
-
-    public void setDependencies(List<Object> dependencies) {
-        this.dependencies = dependencies;
-    }
 
 }

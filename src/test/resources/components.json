@@ -7,66 +7,77 @@
     {
       "table": "jnu_actionscripts",
       "data": "SELECT id, site, scriptcode, usercreate, userupdate FROM jnu_actionscripts WHERE id IN (SELECT actionscript FROM jnu_eventactions WHERE event IN (SELECT id FROM jnu_events WHERE component = '{id}')) ORDER BY id",
+      "delete": "",
       "columnpk": "id",
       "updateonexist": false
     },
     {
       "table": "jnu_sites",
       "data": "SELECT sitename FROM jnu_sites WHERE sitename IN (SELECT site FROM jnu_projects WHERE id IN (SELECT project FROM jnu_components WHERE id = '{id}')) ORDER BY sitename",
+      "delete": "",
       "columnpk": "sitename",
       "updateonexist": false
     },
     {
       "table": "jnu_projects",
       "data": "SELECT id, regdate, usercreate, site FROM jnu_projects WHERE id IN (SELECT project FROM jnu_components WHERE id = '{id}') ORDER BY id",
+      "delete": "",
       "columnpk": "id",
       "updateonexist": false
     },
     {
       "table": "jnu_jdbc",
       "data": "SELECT id, description, driver, url, username, passwd, maxcon, usercreate, userupdate, site FROM jnu_jdbc WHERE id IN (SELECT jdbc FROM jnu_components WHERE id = '{id}') ORDER BY id",
+      "delete": "",
       "columnpk": "id",
       "updateonexist": false
     },
     {
       "table": "jnu_components",
       "data": "SELECT id, description, project, css, jshead, jsbody, usercreate, userupdate, title, showtitle, componenttype, jdbc, jsonobject, usecache FROM jnu_components WHERE id = '{id}' ORDER BY id",
+      "delete": "",
       "columnpk": "id",
       "updateonexist": true
     },
     {
       "table": "jnu_componentparts",
       "data": "SELECT id, component, varname, label, showlabel, datatype, action, canbenull, valbyquery, dependon, seq, valbyrequest, valbydefault, size, placeholder, json, usercreate, userupdate, tabgroup, \"column\" FROM jnu_componentparts WHERE component = '{id}' ORDER BY id",
+      "delete": "",
       "columnpk": "id",
       "updateonexist": true
     },
     {
       "table": "jnu_events",
       "data": "SELECT id, name, component, project, seq, conf, label, enabled FROM jnu_events WHERE component = '{id}' ORDER BY id",
+      "delete": "",
       "columnpk": "id",
       "updateonexist": true
     },
     {
       "table": "jnu_roles",
       "data": "SELECT role FROM jnu_roles WHERE role IN (SELECT role FROM jnu_eventaccess WHERE eventid IN (SELECT id FROM jnu_events WHERE component = '{id}') UNION SELECT role FROM jnu_componentaccess WHERE componentid = '{id}') ORDER BY role",
+      "delete": "",
       "columnpk": "role",
       "updateonexist": false
     },
     {
       "table": "jnu_eventaccess",
       "data": "SELECT eventid, site, role FROM jnu_eventaccess WHERE eventid IN (SELECT id FROM jnu_events WHERE component = '{id}') ORDER BY eventid, role",
+      "delete": "",
       "columnpk": "eventid,site,role",
       "updateonexist": false
     },
     {
       "table": "jnu_componentaccess",
       "data": "SELECT componentid, site, role FROM jnu_componentaccess WHERE componentid  = '{id}' ORDER BY componentid, role",
+      "delete": "",
       "columnpk": "componentid,site,role",
       "updateonexist": false
     },
     {
       "table": "jnu_reportparts",
       "data": "SELECT id, seq, usercreate, userupdate, component, actionclass, actiondata, name, description FROM jnu_reportparts WHERE component  = '{id}' ORDER BY id",
+      "delete": "",
       "columnpk": "id",
       "updateonexist": true
     }

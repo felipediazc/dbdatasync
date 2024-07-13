@@ -5,29 +5,18 @@
  */
 package com.fdcapps.dbdatasync.datadefinition;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author Felipe Diaz C <felipediazc@fdcapps.com>
  */
+@Setter
+@Getter
 public class DefinitionDependency {
 
     String definition;
     String parameter;
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public String getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
-    }
 
 }

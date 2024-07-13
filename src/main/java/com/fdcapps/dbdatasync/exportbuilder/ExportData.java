@@ -21,6 +21,6 @@ import org.json.JSONObject;
 public interface ExportData {
     
     
-     public JSONObject getData(DataDefinition dataDefinition, List<String> parameters, Connection con) throws ExportBuilderException, SQLException;
+     JSONObject getData(DataDefinition dataDefinition, List<String> parameters, Connection con) throws ExportBuilderException, SQLException;
     
 }

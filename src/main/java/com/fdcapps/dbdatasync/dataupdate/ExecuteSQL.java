@@ -9,14 +9,13 @@ import java.util.Date;
 import java.util.Iterator;
 
 import com.fdcapps.dbdatasync.exportbuilder.DataToJsonValues;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class ExecuteSQL {
 
-    private static final Logger log = LoggerFactory.getLogger(ExecuteSQL.class.getName());
     public static final String INTEGER = "INTEGER";
     public static final String NULL = "NULL";
     public static final String STRING = "STRING";
@@ -26,6 +25,7 @@ public class ExecuteSQL {
     public static final String DATE = "DATE";
     public static final String VALUE = "value";
     public static final String TYPE = "type";
+    public static final String ERROR = "error";
 
     public String getColumnType(int columnType) {
         if (columnType == java.sql.Types.NUMERIC || columnType == java.sql.Types.DECIMAL) {
@@ -207,13 +207,27 @@ public class ExecuteSQL {
         }
     }
 
-    public static void setParamTimestamp(PreparedStatement ps, int j, String value) throws SQLException, ParseException {
+    public static void setParamTimestamp(PreparedStatement ps, int j, String value) throws SQLException {
         if (value == null) {
             ps.setNull(j, java.sql.Types.TIMESTAMP);
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            Date date = sdf.parse(value);
+            Date date = getDate(value, "yyyy-MM-dd HH:mm:ss.SSS");
+            if (date == null) {
+                date = getDate(value, "yyyy-MM-dd HH:mm:ss");
+            }
+            if (date == null) {
+                throw new SQLException("Invalid date format");
+            }
             ps.setTimestamp(j, new java.sql.Timestamp(date.getTime()));
+        }
+    }
+
+    public static Date getDate(String value, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            return sdf.parse(value);
+        } catch (ParseException e) {
+            return null;
         }
     }
 
@@ -248,7 +262,7 @@ public class ExecuteSQL {
                 ps.setNull(j, java.sql.Types.INTEGER);
                 break;
             case "DOUBLE_NULL":
-                ps.setNull(1, java.sql.Types.DOUBLE);
+                ps.setNull(j, java.sql.Types.DOUBLE);
                 break;
             case "TIMESTAMP_NULL":
             case "DATE_NULL":
@@ -270,6 +284,9 @@ public class ExecuteSQL {
         try {
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 int j = 1;
+                log.debug("QUERY TO RUN : {}", sql);
+                log.debug("PARAMS SIZE  : {}", arrayParameters.length());
+                log.debug("PARAMS ARE {}", arrayParameters);
                 for (int i = 0; i < arrayParameters.length(); i++) {
                     JSONObject param = arrayParameters.getJSONObject(i);
                     key = param.getString("key");
@@ -298,20 +315,37 @@ public class ExecuteSQL {
                             setParamNull(ps, j, value);
                             break;
                         default:
+                            log.error("********* HEY *********** type do not match : {}  Index {} value {}", type, j, value);
                             break;
                     }
                     j++;
                 }
                 Integer rowCount = ps.executeUpdate();
                 jsonObject.put("totalrows", rowCount);
-                jsonObject.put("error", "");
+                jsonObject.put(ERROR, "");
             }
         } catch (Exception e) {
             log.error("executeUpdate() : {}", e.toString());
-            log.error("parameter: {} value {}", key, value);
+            log.error("parameter: {} value: {}", key, value);
             jsonObject.put("data", "");
-            jsonObject.put("error", e);
+            jsonObject.put(ERROR, e);
             throw new SQLException(e + ". parameter: " + key + " value: " + value);
+        }
+        return jsonObject;
+    }
+
+    public static JSONObject executeUpdate(String sql, Connection con) throws SQLException {
+        JSONObject jsonObject = new JSONObject();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            log.debug("QUERY TO RUN : {}", sql);
+            Integer rowCount = ps.executeUpdate();
+            jsonObject.put("totalrows", rowCount);
+            jsonObject.put(ERROR, "");
+        } catch (Exception e) {
+            log.error("executeUpdate() : {}", e.toString());
+            jsonObject.put("data", "");
+            jsonObject.put(ERROR, e);
+            throw new SQLException("" + e);
         }
         return jsonObject;
     }

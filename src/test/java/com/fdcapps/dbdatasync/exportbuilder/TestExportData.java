@@ -15,14 +15,13 @@ import com.fdcapps.dbdatasync.datadefinition.DataDefinition;
 import com.fdcapps.dbdatasync.input.DataInput;
 import com.fdcapps.dbdatasync.input.Utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.junit.Test;
 
+@Slf4j
 public class TestExportData {
 
-    private static final Logger log = LoggerFactory.getLogger(TestExportData.class.getName());
     ContextObj ctx = ContextObj.instance();
 
     ExportData exportData = ctx.getExportData();
@@ -38,7 +37,7 @@ public class TestExportData {
             con = DriverManager.getConnection(resource.getString("url"), resource.getString("username"),
                     resource.getString("password"));
         } catch (ClassNotFoundException | SQLException ex2) {
-            log.error("ERROR al crear la conexion con la base de datos " + ex2);
+            log.error("ERROR al crear la conexion con la base de datos {}", ex2.toString());
         }
         return con;
     }

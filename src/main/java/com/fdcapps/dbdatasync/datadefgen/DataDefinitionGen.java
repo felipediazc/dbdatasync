@@ -16,6 +16,6 @@ import java.io.InputStream;
  */
 public interface DataDefinitionGen {
 
-    public DataDefinition getDataDefinition(InputStream in) throws IOException;
+    DataDefinition getDataDefinition(InputStream in) throws IOException;
 
 }

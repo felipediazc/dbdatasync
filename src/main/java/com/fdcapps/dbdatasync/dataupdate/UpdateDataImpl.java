@@ -6,12 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+@Slf4j
 public class UpdateDataImpl implements UpdateData {
 
     public static final String SET = " SET ";
@@ -20,7 +20,6 @@ public class UpdateDataImpl implements UpdateData {
     public static final String DEFINITION = "definition";
     public static final String COLUMNPK = "columnpk";
 
-    private static final Logger log = LoggerFactory.getLogger(UpdateDataImpl.class.getName());
     public static final String AND = " AND ";
 
     @Override
@@ -59,6 +58,7 @@ public class UpdateDataImpl implements UpdateData {
         String updateSql = "";
         String selectSql = "";
         try (Statement st1 = con.createStatement()) {
+            log.info("*** Updating " + tableName + " for " + data.length() + " records ");
             for (int i = 0; i < data.length(); i++) {
                 JSONObject jsonRecord = data.getJSONObject(i);
                 selectSql = getSelectSentence(tableName, columnPk, jsonRecord);
@@ -84,12 +84,19 @@ public class UpdateDataImpl implements UpdateData {
         ResultSet rs;
         String updateSql = "";
         String selectSql = "";
+        JSONArray parameters = new JSONArray();
         try (Statement st1 = con.createStatement()) {
             if (dependency.has(TABLE)) {
                 String tableName = dependency.getString(TABLE);
                 String columnPk = dependency.getString(COLUMNPK);
                 Boolean updateOnExist = dependency.getBoolean("updateOnExist");
+                if (dependency.has("delete")) {
+                    String deleteSql = dependency.getString("delete");
+                    log.debug("DELETE SENTENCE IS: " + deleteSql);
+                    ExecuteSQL.executeUpdate(deleteSql, con);
+                }
                 JSONArray data = dependency.getJSONArray("data");
+                log.info("*** Updating " + tableName + " for " + data.length() + " records ");
                 for (int i = 0; i < data.length(); i++) {
                     JSONObject jsonRecord = data.getJSONObject(i);
                     selectSql = getSelectSentence(tableName, columnPk, jsonRecord);
@@ -97,13 +104,13 @@ public class UpdateDataImpl implements UpdateData {
                     if (rs.next()) {
                         if (Boolean.TRUE.equals(updateOnExist)) {
                             updateSql = getUpdateSentence(tableName, columnPk, jsonRecord);
-                            JSONArray parameters = ExecuteSQL.getParameters(jsonRecord);
+                            parameters = ExecuteSQL.getParameters(jsonRecord);
                             parameters = ExecuteSQL.getUpdateParameters(parameters, columnPk);
                             ExecuteSQL.executeUpdate(updateSql, parameters, con);
                         }
                     } else {
                         updateSql = getInsertSentence(tableName, jsonRecord);
-                        JSONArray parameters = ExecuteSQL.getParameters(jsonRecord);
+                        parameters = ExecuteSQL.getParameters(jsonRecord);
                         ExecuteSQL.executeUpdate(updateSql, parameters, con);
                     }
                 }
@@ -174,8 +181,11 @@ public class UpdateDataImpl implements UpdateData {
         StringBuilder sql3 = new StringBuilder(" FROM ").append(tableName).append(" WHERE 1 = 1 ");
         Iterator<?> keys = jsonRecord.keys();
 
+        String[] trimmedArray = Arrays.stream(parts).map(String::trim).toArray(String[]::new);
+        List<String> primaryKeysList = Arrays.asList(trimmedArray);
+
         while (keys.hasNext()) {
-            if (!sql2.toString().equals("")) {
+            if (!sql2.toString().isEmpty()) {
                 sql2.append(", ");
             }
             String columnName = (String) keys.next();
@@ -183,15 +193,15 @@ public class UpdateDataImpl implements UpdateData {
             Object objData = jsonRecord.get(columnName);
             if (ExecuteSQL.isInteger(objData) || ExecuteSQL.isDouble(objData) || ExecuteSQL.isBoolean(objData)
                     || ExecuteSQL.isLong(objData)) {
-                if (Arrays.asList(parts).contains(columnName)) {
+                if (primaryKeysList.contains(columnName)) {
                     sql3.append(AND).append(columnName).append(" = ").append(jsonRecord.get(columnName).toString());
                 }
             } else if (ExecuteSQL.isString(jsonRecord, columnName)) {
-                if (Arrays.asList(parts).contains(columnName)) {
+                if (primaryKeysList.contains(columnName)) {
                     sql3.append(AND).append(columnName).append(" = ").append("'")
                             .append(escapeQuote(jsonRecord.getString(columnName))).append("'");
                 }
-            } else if (Arrays.asList(parts).contains(columnName)) {
+            } else if (primaryKeysList.contains(columnName)) {
                 sql3.append(AND).append(columnName).append(" = ").append("'")
                         .append(escapeQuote(jsonRecord.get(columnName).toString())).append("'");
             }

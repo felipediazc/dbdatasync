@@ -7,6 +7,6 @@ import org.json.JSONObject;
 
 public interface UpdateData {
 
-    public void sync(JSONObject dataDefinition, Connection con) throws SQLException;
+    void sync(JSONObject dataDefinition, Connection con) throws SQLException;
 
 }

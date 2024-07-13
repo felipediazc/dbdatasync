@@ -13,13 +13,13 @@ import org.json.JSONException;
 
 public interface DataToJson {
 
-    public List<String> getParameters(String sql);
+    List<String> getParameters(String sql);
 
-    public Map<String, String> getParametersAndValues(String sql, List<String> values) throws ExportBuilderException;
+    Map<String, String> getParametersAndValues(String sql, List<String> values) throws ExportBuilderException;
 
-    public String getFullSql(String sql, Map<String, String> paramValues);
+    String getFullSql(String sql, Map<String, String> paramValues);
 
-    public JSONArray getJsonFromResultSet(ResultSet resultSet) throws JSONException, SQLException;
+    JSONArray getJsonFromResultSet(ResultSet resultSet) throws JSONException, SQLException;
 
-    public JSONArray getDataFromSql(String sql, Connection con) throws SQLException;
+    JSONArray getDataFromSql(String sql, Connection con) throws SQLException;
 }

@@ -5,47 +5,21 @@
  */
 package com.fdcapps.dbdatasync.datadefinition;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author Felipe Diaz C <felipediazc@fdcapps.com>
  */
+@Setter
+@Getter
 public class DataDependency {
 
     String table;
     String data;
+    String delete;
     String columnpk;
     Boolean updateOnExist;
-
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public String getColumnpk() {
-        return columnpk;
-    }
-
-    public void setColumnpk(String columnpk) {
-        this.columnpk = columnpk;
-    }
-
-    public Boolean getUpdateOnExist() {
-        return updateOnExist;
-    }
-
-    public void setUpdateOnExist(Boolean updateOnExist) {
-        this.updateOnExist = updateOnExist;
-    }
 
 }

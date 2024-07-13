@@ -8,8 +8,7 @@ import com.fdcapps.dbdatasync.exportbuilder.ExportData;
 import com.fdcapps.dbdatasync.input.DataInput;
 import com.fdcapps.dbdatasync.input.Utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.junit.Test;
 
@@ -21,7 +20,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
+@Slf4j
 public class TestUpdateData {
 
     ContextObj ctx = ContextObj.instance();
@@ -29,8 +28,6 @@ public class TestUpdateData {
     DataDefinitionGen dataDefinitionGen = ctx.getGenerator();
     DataInput dataInput = ctx.getDataInput();
     ExportData exportData = ctx.getExportData();
-
-    private static final Logger log = LoggerFactory.getLogger(TestUpdateData.class.getName());
 
     public static final String DATABASE_DEST = "database-dest";
 
@@ -63,7 +60,7 @@ public class TestUpdateData {
 
     @Test
     public void testSync() throws Exception {
-        List<String> parameters = Collections.singletonList("12-vallein");
+        List<String> parameters = Collections.singletonList("12-customers");
         InputStream in = dataInput.getDataInput("components.json");
         DataDefinition dataDefinition = dataDefinitionGen.getDataDefinition(in);
         Connection conOrigin = SetupTestDatabase.getConnection("database");

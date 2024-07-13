@@ -11,15 +11,14 @@ import java.sql.Statement;
 import java.util.*;
 
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.io.FileMatchers.anExistingDirectory;
 
+@Slf4j
 public class SetupTestDatabase {
 
-    private static final Logger log = LoggerFactory.getLogger(SetupTestDatabase.class.getName());
     private static Boolean isDatabaseInstalled = false;
 
     @SneakyThrows
@@ -76,7 +75,7 @@ public class SetupTestDatabase {
             Statement st = con.createStatement();
             for (String s : fileList) {
                 strtmp = s;
-                if (strtmp.length() > 0) {
+                if (!strtmp.isEmpty()) {
                     if (strtmp.charAt(0) == '-' && strtmp.charAt(1) == '-') {
                         comment = true;
                     } else if (strtmp.indexOf("CREATE") == 0 || strtmp.indexOf("COMMENT") == 0 || strtmp.indexOf("ALTER") == 0 || strtmp.indexOf("SELECT") == 0 || strtmp.indexOf("INSERT INTO") == 0 && comment) {
@@ -95,7 +94,7 @@ public class SetupTestDatabase {
             con.commit();
             con.setAutoCommit(true);
         } catch (Exception e) {
-            log.error("ERROR on script execution {} Query was {}", e, query.toString());
+            log.error("ERROR on script execution {} Query was {}", e, query);
         }
     }
 
