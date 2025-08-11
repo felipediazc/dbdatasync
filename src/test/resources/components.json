@@ -2,6 +2,7 @@
   "id": "components",
   "table": "jnu_eventactions",
   "data": "SELECT id, seq, usercreate, userupdate, event, actionclass, actiondata, eventaction, jdbc, enabled, description FROM jnu_eventactions WHERE event IN (SELECT id FROM jnu_events WHERE component = '{id}') ORDER BY id",
+  "version": "SELECT version FROM jnu_components WHERE id = '{id}'",
   "columnpk": "id",
   "dependencies": [
     {

@@ -60,7 +60,7 @@ public class ExecuteSQL {
     }
 
     public static boolean isInteger(Object str) {
-        if (Boolean.TRUE.equals(isNull(str))) {
+        if (isNull(str)) {
             return false;
         }
         try {
@@ -72,7 +72,7 @@ public class ExecuteSQL {
     }
 
     public static boolean isDouble(Object str) {
-        if (Boolean.TRUE.equals(isNull(str))) {
+        if (isNull(str)) {
             return false;
         }
         try {
@@ -84,7 +84,7 @@ public class ExecuteSQL {
     }
 
     public static boolean isBoolean(Object str) {
-        if (Boolean.TRUE.equals(isNull(str))) {
+        if (isNull(str)) {
             return false;
         }
         try {
@@ -103,7 +103,7 @@ public class ExecuteSQL {
     }
 
     public static boolean isLong(Object str) {
-        if (Boolean.TRUE.equals(isNull(str))) {
+        if (isNull(str)) {
             return false;
         }
         try {
@@ -115,7 +115,7 @@ public class ExecuteSQL {
     }
 
     public static boolean isValidTimestamp(String strDate) {
-        if (Boolean.TRUE.equals(isNull(strDate))) {
+        if (isNull(strDate)) {
             return false;
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -130,7 +130,7 @@ public class ExecuteSQL {
 
     public static boolean isString(JSONObject jsonObject, String columnName) {
         try {
-            return !Boolean.TRUE.equals(isNull(jsonObject.getString(columnName)));
+            return !isNull(jsonObject.getString(columnName));
         } catch (Exception e) {
             return false;
         }
@@ -159,7 +159,7 @@ public class ExecuteSQL {
             } else if (isString(jsonObject, columnName)) {
                 column.put(VALUE, jsonObject.getString(columnName));
                 column.put(TYPE, STRING);
-            } else if (Boolean.TRUE.equals(isNull(objData))) {
+            } else if (isNull(objData)) {
                 column.put(VALUE, (jsonObject.get(columnName)).toString());
                 column.put(TYPE, NULL);
             } else {

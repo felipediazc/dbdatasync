@@ -58,7 +58,7 @@ public class UpdateDataImpl implements UpdateData {
         String updateSql = "";
         String selectSql = "";
         try (Statement st1 = con.createStatement()) {
-            log.info("*** Updating " + tableName + " for " + data.length() + " records ");
+            log.info("*** Updating {}  for {}  records ", tableName, data.length());
             for (int i = 0; i < data.length(); i++) {
                 JSONObject jsonRecord = data.getJSONObject(i);
                 selectSql = getSelectSentence(tableName, columnPk, jsonRecord);
@@ -89,7 +89,7 @@ public class UpdateDataImpl implements UpdateData {
             if (dependency.has(TABLE)) {
                 String tableName = dependency.getString(TABLE);
                 String columnPk = dependency.getString(COLUMNPK);
-                Boolean updateOnExist = dependency.getBoolean("updateOnExist");
+                boolean updateOnExist = dependency.getBoolean("updateOnExist");
                 if (dependency.has("delete")) {
                     String deleteSql = dependency.getString("delete");
                     log.debug("DELETE SENTENCE IS: " + deleteSql);
@@ -102,7 +102,7 @@ public class UpdateDataImpl implements UpdateData {
                     selectSql = getSelectSentence(tableName, columnPk, jsonRecord);
                     rs = st1.executeQuery(selectSql);
                     if (rs.next()) {
-                        if (Boolean.TRUE.equals(updateOnExist)) {
+                        if (updateOnExist) {
                             updateSql = getUpdateSentence(tableName, columnPk, jsonRecord);
                             parameters = ExecuteSQL.getParameters(jsonRecord);
                             parameters = ExecuteSQL.getUpdateParameters(parameters, columnPk);

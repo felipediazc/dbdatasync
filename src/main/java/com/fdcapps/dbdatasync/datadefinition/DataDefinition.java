@@ -21,6 +21,7 @@ public class DataDefinition {
     String table;
     String data;
     String columnpk;
+    String version;
     List<Object> dependencies;
 
 }

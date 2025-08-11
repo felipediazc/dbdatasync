@@ -32,17 +32,17 @@ public class MetaDataUtil {
     }
 
     public static DataToJsonValues getNullColumnType(int resultSetMetadataColumnType) {
-        if (Boolean.TRUE.equals(isIntegerColumn(resultSetMetadataColumnType))) {
+        if (isIntegerColumn(resultSetMetadataColumnType)) {
             return DataToJsonValues.INT_NULL;
-        } else if (Boolean.TRUE.equals(isBigIntegerColumn(resultSetMetadataColumnType))) {
+        } else if (isBigIntegerColumn(resultSetMetadataColumnType)) {
             return DataToJsonValues.BIGINT_NULL;
-        } else if (Boolean.TRUE.equals(isDoubleColumn(resultSetMetadataColumnType))) {
+        } else if (isDoubleColumn(resultSetMetadataColumnType)) {
             return DataToJsonValues.DOUBLE_NULL;
-        } else if (Boolean.TRUE.equals(isTimestampColumn(resultSetMetadataColumnType))) {
+        } else if (isTimestampColumn(resultSetMetadataColumnType)) {
             return DataToJsonValues.TIMESTAMP_NULL;
-        } else if (Boolean.TRUE.equals(isDateColumn(resultSetMetadataColumnType))) {
+        } else if (isDateColumn(resultSetMetadataColumnType)) {
             return DataToJsonValues.DATE_NULL;
-        } else if (Boolean.TRUE.equals(isBooleanColumn(resultSetMetadataColumnType))) {
+        } else if (isBooleanColumn(resultSetMetadataColumnType)) {
             return DataToJsonValues.BOOLEAN_NULL;
         } else {
             return DataToJsonValues.STRING_NULL;

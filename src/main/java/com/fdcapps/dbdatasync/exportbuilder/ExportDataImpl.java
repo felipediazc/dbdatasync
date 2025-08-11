@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.fdcapps.dbdatasync.exportbuilder;
 
 import com.fdcapps.dbdatasync.context.ContextObj;
@@ -28,7 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * @author Felipe Diaz C <felipediazc@fdcapps.com>
+ * @author Felipe Diaz C <felipediazc@jhanu.com>
  */
 @Slf4j
 public class ExportDataImpl implements ExportData {
@@ -66,6 +61,7 @@ public class ExportDataImpl implements ExportData {
         JSONArray jsonArray = dataToJson.getDataFromSql(sql, con);
         jsonData.put("data", jsonArray);
         jsonData.put("columnpk", dataDefinition.getColumnpk());
+        jsonData.put("version",  getVersion(dataDefinition, parameters, con));
         List<Object> dependenciesList = dataDefinition.getDependencies();
         JSONArray jsonDependencies = new JSONArray();
         dependenciesList.forEach(object -> {
@@ -118,5 +114,24 @@ public class ExportDataImpl implements ExportData {
         });
         jsonData.put("dependencies", jsonDependencies);
         return jsonData;
+    }
+
+    private Integer getVersion(DataDefinition dataDefinition, List<String> parameters, Connection con) {
+        int version = 0;
+        if (dataDefinition.getVersion() != null && !dataDefinition.getVersion().isEmpty()) {
+            String sqlVersion = dataDefinition.getVersion();
+            Map<String, String> paramValuesVersion = null;
+            try {
+                paramValuesVersion = dataToJson.getParametersAndValues(sqlVersion, parameters);
+                sqlVersion = dataToJson.getFullSql(sqlVersion, paramValuesVersion);
+                JSONArray jsonArrayVersion = dataToJson.getDataFromSql(sqlVersion, con);
+                if(jsonArrayVersion != null && !jsonArrayVersion.isEmpty()) {
+                   version = jsonArrayVersion.getJSONObject(0).getInt("version");
+                }
+            } catch (ExportBuilderException | SQLException e) {
+                log.error("Error getting version for data migration SQL sentence {}", e.toString());
+            }
+        }
+        return version;
     }
 }
